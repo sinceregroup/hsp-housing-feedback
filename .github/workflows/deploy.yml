@@ -1,0 +1,69 @@
+# .github/workflows/deploy.yml (最終、分離任務版)
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+# 設定權限，允許 workflow 部署到 GitHub Pages
+permissions:
+  pages: write
+  id-token: write
+
+# 避免舊的 workflow 執行被新的覆蓋
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # ==================================
+  # 任務一: 構建 (Build)
+  # ==================================
+  build:
+    runs-on: ubuntu-latest
+    # 這個任務需要權限來讀取和修改檔案
+    permissions:
+      contents: write 
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Replace Apps Script URL Placeholder 🔄
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = './index.html';
+            const secretUrl = '${{ secrets.APPS_SCRIPT_URL }}';
+            
+            let fileContent = fs.readFileSync(path, 'utf8');
+            fileContent = fileContent.replace('APPS_SCRIPT_URL_PLACEHOLDER', secretUrl);
+            fs.writeFileSync(path, fileContent);
+            console.log('Successfully replaced the placeholder URL.');
+
+      - name: Setup Pages ⚙️
+        uses: actions/configure-pages@v5
+        
+      - name: Upload artifact 📦
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # 從根目錄上傳所有處理好的檔案
+          path: '.'
+
+  # ==================================
+  # 任務二: 部署 (Deploy)
+  # ==================================
+  deploy:
+    # 這個任務需要 build 任務成功完成後才能開始
+    needs: build
+    
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+      
+    steps:
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
+        uses: actions/deploy-pages@v4
