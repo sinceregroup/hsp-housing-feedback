@@ -259,17 +259,19 @@
 
         @keyframes drawCheck {
             0% {
+                opacity: 0;
+                height: 0;
+                width: 0;
+            }
+
+            20% {
                 opacity: 1;
                 height: 0;
                 width: 0;
             }
 
-            50% {
-                height: 40px;
-                width: 0;
-            }
-
             100% {
+                opacity: 1;
                 height: 40px;
                 width: 20px;
             }
@@ -527,6 +529,20 @@
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
+            }
+
+            // Phone Validation (Optional but strict if entered)
+            const contactInput = $('#contact').val();
+            if (contactInput) {
+                // Allow: 09xxxxxxxx (Mobile), 0x-xxxxxxx (Landline), or with extension #xxxx
+                // Simple regex: Starts with 0, contains digits, dashes, or #, min length 7
+                const phoneRegex = /^0[\d\-#]{6,20}$/;
+                if (!phoneRegex.test(contactInput)) {
+                    $('#alertModalBody').html('請輸入有效的聯絡電話或分機。<br>Please enter a valid phone number or extension.');
+                    const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                    alertModal.show();
+                    return;
+                }
             }
 
             submitButton.prop('disabled', true);
