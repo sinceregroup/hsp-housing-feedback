@@ -12,301 +12,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        :root {
-            /* Aurora Gradient Colors */
-            --aurora-1: #ff9a9e;
-            --aurora-2: #fad0c4;
-            --aurora-3: #a18cd1;
-            --aurora-4: #fbc2eb;
-
-            /* Glassmorphism Variables */
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            --text-color: #1d1d1f;
-            --text-muted: #86868b;
-            --primary-color: #0071e3;
-            --input-bg: rgba(255, 255, 255, 0.5);
-            --input-focus-ring: rgba(0, 113, 227, 0.3);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Noto Sans TC", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(-45deg, var(--aurora-1), var(--aurora-2), var(--aurora-3), var(--aurora-4));
-            background-size: 400% 400%;
-            animation: auroraBG 15s ease infinite;
-            min-height: 100vh;
-            color: var(--text-color);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        @keyframes auroraBG {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        .safe-area-padding {
-            padding: 1.5rem;
-            padding-top: max(2rem, env(safe-area-inset-top));
-            padding-bottom: max(2rem, env(safe-area-inset-bottom));
-            max-width: 600px;
-            /* Limit width for better readability on desktop */
-            margin: 0 auto;
-        }
-
-        /* Glass Card */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            animation: fadeInUp 0.6s ease-out backwards;
-        }
-
-        .glass-card:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-
-        .glass-card:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .glass-card:nth-child(3) {
-            animation-delay: 0.3s;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Typography */
-        h4,
-        h5 {
-            letter-spacing: -0.02em;
-        }
-
-        .card-title {
-            font-weight: 700;
-            color: #1d1d1f;
-        }
-
-        .card-subtitle {
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .form-label {
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-            color: #1d1d1f;
-        }
-
-        .text-muted {
-            color: var(--text-muted) !important;
-        }
-
-        /* Inputs & Selects */
-        .form-control,
-        .form-select {
-            background-color: var(--input-bg);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 16px;
-            /* More rounded */
-            padding: 0.8rem 1rem;
-            font-size: 16px;
-            /* Prevent iOS zoom */
-            transition: all 0.2s ease;
-            color: var(--text-color);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
-        }
-
-        .form-control:focus,
-        .form-select:focus {
-            background-color: #fff;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px var(--input-focus-ring);
-            outline: none;
-        }
-
-        /* Button */
-        .submit-btn {
-            background: var(--primary-color);
-            border: none;
-            color: white;
-            font-weight: 600;
-            font-size: 1.1rem;
-            padding: 1rem;
-            border-radius: 18px;
-            width: 100%;
-            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
-        }
-
-        .submit-btn:active {
-            transform: scale(0.96);
-        }
-
-        .submit-btn:hover {
-            box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
-            transform: translateY(-1px);
-        }
-
-        .submit-btn:disabled {
-            background: #d2d2d7;
-            box-shadow: none;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Image Preview */
-        .preview-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 16px;
-            margin-top: 1rem;
-            display: none;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Success Animation */
-        .success-container {
-            display: none;
-            text-align: center;
-            padding: 3rem 1rem;
-            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .checkmark-circle {
-            width: 80px;
-            height: 80px;
-            position: relative;
-            display: inline-block;
-            vertical-align: top;
-            margin-bottom: 1rem;
-        }
-
-        .checkmark-circle .background {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #28a745;
-            position: absolute;
-            left: 0;
-            top: 0;
-            animation: scaleBackground 0.4s ease-out forwards;
-        }
-
-        .checkmark-circle .checkmark {
-            border-radius: 5px;
-            height: 40px;
-            width: 20px;
-            border-bottom: 4px solid #fff;
-            border-right: 4px solid #fff;
-            position: absolute;
-            left: 30px;
-            top: 16px;
-            transform: rotate(45deg);
-            opacity: 0;
-            animation: drawCheck 0.3s ease-out 0.4s forwards;
-        }
-
-        @keyframes scaleBackground {
-            0% {
-                transform: scale(0);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes drawCheck {
-            0% {
-                opacity: 0;
-                height: 0;
-                width: 0;
-            }
-
-            20% {
-                opacity: 1;
-                height: 0;
-                width: 0;
-            }
-
-            100% {
-                opacity: 1;
-                height: 40px;
-                width: 20px;
-            }
-        }
-
-        /* Dark Mode */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --aurora-1: #2c3e50;
-                --aurora-2: #000000;
-                --aurora-3: #434343;
-                --aurora-4: #1a1a1a;
-                --glass-bg: rgba(30, 30, 30, 0.65);
-                --glass-border: rgba(255, 255, 255, 0.1);
-                --text-color: #f5f5f7;
-                --text-muted: #a1a1a6;
-                --input-bg: rgba(0, 0, 0, 0.4);
-            }
-
-            .form-control,
-            .form-select {
-                color: white;
-                border-color: rgba(255, 255, 255, 0.1);
-            }
-
-            .form-control:focus,
-            .form-select:focus {
-                background-color: rgba(0, 0, 0, 0.6);
-            }
-
-            .form-control::placeholder {
-                color: rgba(255, 255, 255, 0.4);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -393,172 +99,147 @@
                 送出意見 <small class="d-block fw-normal opacity-75" style="font-size: 0.8rem;">Submit Feedback</small>
             </button>
         </div>
+
+        <!-- Privacy Policy Footer Link -->
+        <div class="text-center mt-3 mb-5">
+            <p class="text-white opacity-75" style="font-size: 0.85rem;">
+                提交即代表您同意 <a href="#" class="text-white text-decoration-underline" data-bs-toggle="modal"
+                    data-bs-target="#privacyModal">隱私權政策</a><br>
+                By submitting, you agree to the Privacy Policy.
+            </p>
+        </div>
     </div>
 
     <!-- Success Container (Hidden by default) -->
     <div class="container safe-area-padding" id="successContainer" style="display: none;">
         <div class="glass-card success-container d-block">
             <div class="checkmark-circle">
-                '致知樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '聚賢樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '明德樓': ['1F', '2F', '3F', '4F'],
-                '至善樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '蘭苑': ['1F', '2F', '3F', '4F', '5F'],
-                '誠意樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '日新樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '莊敬樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '自強樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '正心樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '學誠樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '學樸樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '篤行樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '華夏樓': ['1F', '2F', '3F', '4F'],
-                '漢光樓': ['1F', '2F', '3F', '4F'],
-                '竹水樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '華光樓': ['1F', '2F', '3F', '4F'],
-                '弘道樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
-                '弘毅樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
-                '弘遠樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
-                '弘學樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
-                '學禮樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F', '9F', '10F', '11F', '12F'],
-                '弘德樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
-                '中興樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '竹山樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-                '弘仁樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F']
-                };
+                <div class="background"></div>
+                <div class="checkmark"></div>
+            </div>
+            <h3 class="fw-bold mt-3">提交成功</h3>
+            <h5 class="text-muted fw-normal mb-4">Success</h5>
+            <p class="mb-4 text-secondary">感謝您的回饋，您的意見是我們進步的動力！<br>Thank you for your feedback!</p>
+            <div class="d-flex justify-content-center gap-2">
+                <button class="btn btn-outline-secondary rounded-pill px-4" onclick="handleClose()">關閉視窗
+                    (Close)</button>
+                <button class="btn btn-primary rounded-pill px-4" onclick="location.reload()">再次填寫 (Reload)</button>
+            </div>
+        </div>
+    </div>
 
-                document.addEventListener('DOMContentLoaded', function () {
-                // 1. Parse URL Parameters
-                const urlParams = new URLSearchParams(window.location.search);
-                const buildingParam = urlParams.get('building') || '未指定';
+    <!-- Alert Modal -->
+    <div class="modal fade" id="alertModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-card border-0" style="background: rgba(255,255,255,0.9);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">提示 (Notice)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-2 pb-4" id="alertModalBody"></div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-primary w-100 rounded-4 py-2" data-bs-dismiss="modal">確定
+                        (OK)</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                // 2. Set Building Field
-                const buildingInput = document.getElementById('building');
-                buildingInput.value = buildingParam;
+    <!-- Privacy Policy Modal -->
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content glass-card border-0" style="background: rgba(255,255,255,0.9);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="privacyModalLabel">隱私權政策 (Privacy Policy)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-2 pb-4">
+                    <p>本平台為提供眷舍公共區域清潔維護意見回饋服務，將會蒐集您的部分個人資料。請您詳閱以下隱私權政策：</p>
+                    <p><strong>1. 資料蒐集之目的：</strong> 蒐集您的姓名、聯絡方式、樓別、樓層、意見內容及上傳照片，旨在處理您的意見回饋、進行後續聯繫及改善服務品質。</p>
+                    <p><strong>2. 資料蒐集之類別：</strong></p>
+                    <ul>
+                        <li>個人識別：姓名 (選填)</li>
+                        <li>聯絡資訊：分機/聯絡方式 (選填)</li>
+                        <li>位置資訊：樓別、樓層 (必填)</li>
+                        <li>意見內容：文字描述 (必填)</li>
+                        <li>影像資料：上傳照片 (選填)</li>
+                    </ul>
+                    <p><strong>3. 資料利用之期間、地區、對象及方式：</strong></p>
+                    <ul>
+                        <li><strong>期間：</strong> 自您提交意見起，至本服務終止或您的意見處理完畢為止。</li>
+                        <li><strong>地區：</strong> 您的資料將儲存於本校伺服器及Google Sheets，並僅限於台灣地區使用。</li>
+                        <li><strong>對象：</strong> 您的意見及相關資料將提供給本校相關權責單位（如總務處、宿舍管理單位）進行處理與改善。</li>
+                        <li><strong>方式：</strong> 您的資料將以電子檔案形式儲存，並僅用於上述目的之範圍內。</li>
+                    </ul>
+                    <p><strong>4. 您可主張之權利：</strong> 針對您的個人資料，您可以行使以下權利：</p>
+                    <ul>
+                        <li>查詢或請求閱覽。</li>
+                        <li>請求製給複製本。</li>
+                        <li>請求補充或更正。</li>
+                        <li>請求停止蒐集、處理或利用。</li>
+                        <li>請求刪除。</li>
+                    </ul>
+                    <p>若您欲行使上述權利，請透過本校相關管道聯繫。</p>
+                    <p><strong>5. 不提供個人資料之影響：</strong> 若您不提供必要的個人資料（如樓別、樓層、意見內容），本平台將無法受理您的意見回饋。</p>
+                    <p><strong>6. 資料安全：</strong> 本平台將採取適當的安全措施，保護您的個人資料，防止未經授權的存取、使用或洩露。</p>
+                    <p>提交意見即表示您已閱讀、理解並同意本隱私權政策之所有內容。</p>
+                    <hr>
+                    <p>This platform collects some of your personal data to provide feedback services for public area
+                        cleaning and maintenance in dormitories. Please read the following Privacy Policy carefully:</p>
+                    <p><strong>1. Purpose of Data Collection:</strong> Your name, contact information, building, floor,
+                        feedback content, and uploaded photos are collected to process your feedback, facilitate
+                        follow-up communication, and improve service quality.</p>
+                    <p><strong>2. Categories of Data Collected:</strong></p>
+                    <ul>
+                        <li>Personal Identification: Name (optional)</li>
+                        <li>Contact Information: Extension/Contact method (optional)</li>
+                        <li>Location Information: Building, Floor (required)</li>
+                        <li>Feedback Content: Text description (required)</li>
+                        <li>Image Data: Uploaded photos (optional)</li>
+                    </ul>
+                    <p><strong>3. Period, Area, Recipients, and Methods of Data Utilization:</strong></p>
+                    <ul>
+                        <li><strong>Period:</strong> From the time you submit your feedback until the termination of
+                            this service or the completion of your feedback processing.</li>
+                        <li><strong>Area:</strong> Your data will be stored on the university's servers and Google
+                            Sheets, and will only be used within Taiwan.</li>
+                        <li><strong>Recipients:</strong> Your feedback and related data will be provided to relevant
+                            responsible units of the university (e.g., General Affairs Office, Dormitory Management
+                            Unit) for processing and improvement.</li>
+                        <li><strong>Methods:</strong> Your data will be stored in electronic file format and used only
+                            within the scope of the aforementioned purposes.</li>
+                    </ul>
+                    <p><strong>4. Rights You May Exercise:</strong> Regarding your personal data, you may exercise the
+                        following rights:</p>
+                    <ul>
+                        <li>Inquire or request to review.</li>
+                        <li>Request a copy.</li>
+                        <li>Request supplementation or correction.</li>
+                        <li>Request to stop collection, processing, or utilization.</li>
+                        <li>Request deletion.</li>
+                    </ul>
+                    <p>If you wish to exercise the above rights, please contact the university through relevant
+                        channels.</p>
+                    <p><strong>5. Impact of Not Providing Personal Data:</strong> If you do not provide necessary
+                        personal data (such as building, floor, feedback content), this platform will not be able to
+                        process your feedback.</p>
+                    <p><strong>6. Data Security:</strong> This platform will take appropriate security measures to
+                        protect your personal data from unauthorized access, use, or disclosure.</p>
+                    <p>By submitting feedback, you acknowledge, understand, and agree to all contents of this Privacy
+                        Policy.</p>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-primary w-100 rounded-4 py-2" data-bs-dismiss="modal">我同意 (I
+                        Agree)</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                // 3. Populate Floor Dropdown
-                const floorSelect = document.getElementById('floor');
-                const floors = buildingFloors[buildingParam] || []; // Default to empty if building not found
-
-                if (floors.length > 0) {
-                floors.forEach(floor => {
-                const option = document.createElement('option');
-                option.value = floor;
-                option.textContent = floor;
-                floorSelect.appendChild(option);
-                });
-                } else {
-                // Fallback if building is unknown or has no config
-                const option = document.createElement('option');
-                option.value = "其他";
-                option.textContent = "其他 (Other)";
-                floorSelect.appendChild(option);
-                }
-                });
-
-                // Image Preview and Base64 Conversion
-                const imageInput = document.getElementById('imageInput');
-                const imagePreview = document.getElementById('imagePreview');
-                const imageBase64 = document.getElementById('imageBase64');
-
-                imageInput.addEventListener('change', function (e) {
-                const file = e.target.files[0];
-                if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                // Show preview
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
-
-                // Set Base64 string to hidden input (remove data:image/xxx;base64, prefix)
-                const base64String = e.target.result.split(',')[1];
-                imageBase64.value = base64String;
-                };
-                reader.readAsDataURL(file);
-                } else {
-                imagePreview.style.display = 'none';
-                imagePreview.src = '';
-                imageBase64.value = '';
-                }
-                });
-
-                // Form Submission
-                $('#submitBtn').on('click', function () {
-                const submitButton = $(this);
-                const form = document.getElementById('feedbackForm');
-
-                // Validation
-                if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-                }
-
-                // Phone Validation (Optional but strict if entered)
-                const contactInput = $('#contact').val();
-                if (contactInput) {
-                // Allow: 09xxxxxxxx (Mobile), 0x-xxxxxxx (Landline), or with extension #xxxx
-                // Simple regex: Starts with 0, contains digits, dashes, or #, min length 7
-                const phoneRegex = /^0[\d\-#]{6,20}$/;
-                if (!phoneRegex.test(contactInput)) {
-                $('#alertModalBody').html('請輸入有效的聯絡電話或分機。<br>Please enter a valid phone number or extension.');
-                const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
-                alertModal.show();
-                return;
-                }
-                }
-
-                submitButton.prop('disabled', true);
-                submitButton.html('<span class="spinner-border spinner-border-sm me-2" role="status"
-                    aria-hidden="true"></span>傳送中... (Submitting...)');
-
-                const dataToSend = {
-                building: $('#building').val(),
-                floor: $('#floor').val(),
-                name: $('#name').val(),
-                contact: $('#contact').val(),
-                feedback: $('#feedback').val(),
-                image: $('#imageBase64').val(),
-                mimeType: imageInput.files[0] ? imageInput.files[0].type : ''
-                };
-
-                const iframe = document.createElement('iframe');
-                iframe.name = 'submitFrame';
-                iframe.style.display = 'none';
-                document.body.appendChild(iframe);
-
-                const formElement = document.createElement('form');
-                formElement.method = 'POST';
-                formElement.action = SCRIPT_URL;
-                formElement.target = 'submitFrame';
-
-                for (const key in dataToSend) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = dataToSend[key];
-                formElement.appendChild(input);
-                }
-                document.body.appendChild(formElement);
-                formElement.submit();
-
-                iframe.onload = function () {
-                showSuccess();
-                };
-
-                // Fallback timeout
-                setTimeout(() => {
-                showSuccess();
-                }, 2500);
-
-                function showSuccess() {
-                // Hide main container
-                $('#mainContainer').fadeOut(300, function () {
-                // Show success container
-                $('#successContainer').fadeIn(500);
-                });
-                }
-                });
-                </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
