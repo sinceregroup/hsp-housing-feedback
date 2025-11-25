@@ -91,6 +91,51 @@ $('#submitBtn').on('click', function () {
             const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
             alertModal.show();
             return;
+        }
+    }
+
+    submitButton.prop('disabled', true);
+    submitButton.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>上傳中... (Uploading...)');
+
+    // Use FormData for standard submission
+    const formData = new FormData();
+    formData.append('key', urlParams.get('key') || '');
+    formData.append('building', $('#building').val());
+    formData.append('floor', $('#floor').val());
+    formData.append('name', $('#name').val());
+    formData.append('contact', $('#contact').val());
+    formData.append('feedback', $('#feedback').val());
+    formData.append('image', $('#imageBase64').val());
+    formData.append('mimeType', imageInput.files[0] ? imageInput.files[0].type : '');
+
+    // Use fetch API instead of iframe
+    fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result === 'success') {
+                showSuccess();
+            } else {
+                throw new Error(data.message || data.error || 'Unknown Error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            submitButton.prop('disabled', false);
+            submitButton.html('送出意見 <small class="d-block fw-normal opacity-75" style="font-size: 0.8rem;">Submit Feedback</small>');
+
+            $('#alertModalBody').html('提交失敗 (Submission Failed):<br>' + error.message);
+            const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+            alertModal.show();
+        });
+
+    function showSuccess() {
+        // Hide main container
+        $('#mainContainer').fadeOut(300, function () {
+            // Show success container
+            $('#successContainer').fadeIn(500);
         });
     }
 });
