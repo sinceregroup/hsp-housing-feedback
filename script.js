@@ -97,6 +97,7 @@ $('#submitBtn').on('click', function () {
     submitButton.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>上傳中... (Uploading...)');
 
     const dataToSend = {
+        key: urlParams.get('key') || '', // Send API Key from URL
         building: $('#building').val(),
         floor: $('#floor').val(),
         name: $('#name').val(),
