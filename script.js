@@ -84,10 +84,10 @@ $('#submitBtn').on('click', function () {
     const contactInput = $('#contact').val();
     if (contactInput) {
         // Allow: 09xxxxxxxx (Mobile), 0x-xxxxxxx (Landline), or with extension #xxxx
-        // Simple regex: Starts with 0, contains digits, dashes, or #, min length 7
+        // Broad regex: Starts with 0, contains digits, dashes, or #, min length 7
         const phoneRegex = /^0[\d\-#]{6,20}$/;
         if (!phoneRegex.test(contactInput)) {
-            $('#alertModalBody').html('請輸入有效的聯絡電話或分機。<br>Please enter a valid phone number or extension.');
+            $('#alertModalBody').html('請輸入有效的聯絡電話。<br>格式範例：0912345678 或 036573511<br><small>Please enter a valid phone number (e.g., 0912345678 or 036573511).</small>');
             const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
             alertModal.show();
             return;
@@ -104,6 +104,7 @@ $('#submitBtn').on('click', function () {
     formData.append('floor', $('#floor').val());
     formData.append('name', $('#name').val());
     formData.append('contact', $('#contact').val());
+    formData.append('email', $('#email').val());
     formData.append('feedback', $('#feedback').val());
     formData.append('image', $('#imageBase64').val());
     formData.append('mimeType', imageInput.files[0] ? imageInput.files[0].type : '');
