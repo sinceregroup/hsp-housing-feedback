@@ -128,14 +128,30 @@ $('#submitBtn').on('click', function () {
     document.body.appendChild(formElement);
     formElement.submit();
 
-    iframe.onload = function () {
-        showSuccess();
+    // Listen for response from Google Apps Script
+    const messageHandler = function (e) {
+        // Security check: You might want to check e.origin here if you know the exact GAS domain
+        // but GAS domains can vary, so we often check the data structure.
+        if (e.data && (e.data.result === 'success' || e.data.result === 'error')) {
+            // Remove listener to prevent duplicate handling
+            window.removeEventListener('message', messageHandler);
+
+            if (e.data.result === 'success') {
+                showSuccess();
+            } else {
+                // Show Error
+                submitButton.prop('disabled', false);
+                submitButton.html('送出意見 <small class="d-block fw-normal opacity-75" style="font-size: 0.8rem;">Submit Feedback</small>');
+
+                const errorMsg = e.data.message || e.data.error || 'Unknown Error';
+                $('#alertModalBody').html('提交失敗 (Submission Failed):<br>' + errorMsg);
+                const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                alertModal.show();
+            }
+        }
     };
 
-    // Fallback timeout
-    setTimeout(() => {
-        showSuccess();
-    }, 2500);
+    window.addEventListener('message', messageHandler);
 
     function showSuccess() {
         // Hide main container
