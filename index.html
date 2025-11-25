@@ -64,7 +64,7 @@
                     <div class="col-md-6">
                         <label for="contact" class="form-label">聯絡方式 (Contact)</label>
                         <input type="text" class="form-control" id="contact" name="contact"
-                            placeholder="ex:0912345678、036573511">
+                            placeholder="e.g., 0912345678、036573511">
                     </div>
                 </div>
                 <div class="row g-3 mb-4">
@@ -91,11 +91,19 @@
 
                 <!-- Image Upload -->
                 <div class="mb-2">
-                    <label for="imageInput" class="form-label">上傳照片 (選填) <small class="text-muted fw-normal">Upload
-                            Image</small></label>
-                    <input class="form-control" type="file" id="imageInput" accept="image/*">
+                    <label for="imageInput" class="form-label">上傳照片 (選填)</label>
+                    <!-- 修改 accept，加入 .heic, .heif -->
+                    <input class="form-control" type="file" id="imageInput"
+                        accept="image/jpeg, image/png, image/webp, image/heic, image/heif">
                     <img id="imagePreview" class="preview-image" alt="Image Preview">
+                    <!-- 增加一個文字提示，因為轉檔需要一兩秒 -->
+                    <div id="imageLoading" class="text-muted mt-2" style="display:none; font-size: 0.9rem;">
+                        <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+                        正在處理圖片，請稍候... (Processing image...)
+                    </div>
                     <input type="hidden" id="imageBase64" name="image">
+                    <!-- 新增一個 hidden field 存 mimeType，確保後端知道我們轉成了 jpeg -->
+                    <input type="hidden" id="imageMimeType" name="mimeType">
                 </div>
             </form>
         </div>
@@ -245,6 +253,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
     <script src="config.js"></script>
     <script src="script.js"></script>
 </body>

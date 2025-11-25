@@ -1,3 +1,9 @@
+// ==========================================
+// CONFIGURATION
+// ==========================================
+// 這裡填入跟 GAS 後端一致的 Key
+const API_KEY = 'sincere-hsp-feedback-2025';
+
 // 1. Parse URL Parameters (Global Scope)
 const urlParams = new URLSearchParams(window.location.search);
 
@@ -6,11 +12,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 2. Set Building Field
     const buildingInput = document.getElementById('building');
-    buildingInput.value = buildingParam;
+    if (buildingInput) buildingInput.value = buildingParam;
 
     // 3. Populate Floor Dropdown
     const floorSelect = document.getElementById('floor');
-    const floors = buildingFloors[buildingParam] || []; // Default to empty if building not found
+    // 注意：確保 config.js 裡的 buildingFloors 變數已載入
+    const floors = (typeof buildingFloors !== 'undefined' ? buildingFloors[buildingParam] : []) || [];
 
     if (floors.length > 0) {
         floors.forEach(floor => {
@@ -20,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
             floorSelect.appendChild(option);
         });
     } else {
-        // Fallback if building is unknown or has no config
         const option = document.createElement('option');
         option.value = "其他";
         option.textContent = "其他 (Other)";
@@ -28,88 +34,156 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Image Preview and Base64 Conversion
+// ==========================================
+// 圖片處理邏輯 (含 HEIC 自動轉檔)
+// ==========================================
 const imageInput = document.getElementById('imageInput');
 const imagePreview = document.getElementById('imagePreview');
 const imageBase64 = document.getElementById('imageBase64');
+const imageMimeType = document.getElementById('imageMimeType'); // 需在 HTML 增加此 hidden input
+const submitBtn = document.getElementById('submitBtn'); // 取得按鈕以便控制鎖定
+
+// 建立狀態提示文字
 const imageStatus = document.createElement('div');
 imageStatus.className = 'mt-2 small text-muted';
-imageInput.parentNode.appendChild(imageStatus);
+if (imageInput) imageInput.parentNode.appendChild(imageStatus);
 
-imageInput.addEventListener('change', function (e) {
-    const file = e.target.files[0];
-    if (file) {
-        imageStatus.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>處理圖片中... (Processing...)';
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            // Show preview
-            imagePreview.src = e.target.result;
-            imagePreview.style.display = 'block';
+if (imageInput) {
+    imageInput.addEventListener('change', async function (e) {
+        const file = e.target.files[0];
 
-            // Set Base64 string to hidden input (remove data:image/xxx;base64, prefix)
-            const base64String = e.target.result.split(',')[1];
-            imageBase64.value = base64String;
-            imageStatus.innerHTML = '<span class="text-success fw-bold">✓ 圖片已準備就緒 (Image Ready)</span>';
-        };
-        reader.readAsDataURL(file);
-    } else {
+        // 重置 UI
         imagePreview.style.display = 'none';
         imagePreview.src = '';
         imageBase64.value = '';
+        if (imageMimeType) imageMimeType.value = '';
         imageStatus.innerHTML = '';
-    }
-});
+
+        if (!file) return;
+
+        // 鎖定送出按鈕，避免轉檔未完成就送出
+        if (submitBtn) submitBtn.disabled = true;
+        imageStatus.innerHTML = '<span class="spinner-border spinner-border-sm me-1 text-primary"></span>處理圖片中... (Processing...)';
+
+        try {
+            let processedFile = file;
+            let finalMimeType = file.type;
+
+            // 檢查是否為 HEIC / HEIF
+            // 檔名檢查是為了相容某些舊瀏覽器無法識別 type 的情況
+            const isHeic = file.type === 'image/heic' ||
+                file.type === 'image/heif' ||
+                file.name.toLowerCase().endsWith('.heic') ||
+                file.name.toLowerCase().endsWith('.heif');
+
+            if (isHeic) {
+                imageStatus.innerHTML = '<span class="spinner-border spinner-border-sm me-1 text-primary"></span>HEIC 轉檔中... (Converting...)';
+                // 使用 heic2any 轉成 JPEG
+                const blob = await heic2any({
+                    blob: file,
+                    toType: "image/jpeg",
+                    quality: 0.8
+                });
+                processedFile = Array.isArray(blob) ? blob[0] : blob;
+                finalMimeType = 'image/jpeg';
+            }
+
+            // 讀取檔案 (原檔或轉檔後的 Blob)
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // 1. 顯示預覽
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+
+                // 2. 設定 Base64 (移除 data:image/xxx;base64, 前綴)
+                const base64String = e.target.result.split(',')[1];
+                imageBase64.value = base64String;
+
+                // 3. 設定 MimeType
+                if (imageMimeType) imageMimeType.value = finalMimeType;
+
+                // 4. 更新狀態並解鎖按鈕
+                imageStatus.innerHTML = '<span class="text-success fw-bold">✓ 圖片已準備就緒 (Image Ready)</span>';
+                if (submitBtn) submitBtn.disabled = false;
+            };
+
+            reader.readAsDataURL(processedFile);
+
+        } catch (error) {
+            console.error("Image Error:", error);
+            imageStatus.innerHTML = '<span class="text-danger">❌ 圖片處理失敗，請換一張 (Process Failed)</span>';
+            imageInput.value = ''; // 清空
+            if (submitBtn) submitBtn.disabled = false;
+        }
+    });
+}
 
 // Handle Close Window
 function handleClose() {
     window.close();
-    // Fallback if window.close() is blocked
     setTimeout(() => {
         alert("因瀏覽器安全性限制，請手動關閉此分頁。\nDue to browser security, please close this tab manually.");
     }, 100);
 }
 
+// ==========================================
 // Form Submission
+// ==========================================
 $('#submitBtn').on('click', function () {
     const submitButton = $(this);
     const form = document.getElementById('feedbackForm');
 
-    // Validation
+    // 1. HTML5 Basic Validation
     if (!form.checkValidity()) {
         form.reportValidity();
         return;
     }
 
-    // Phone Validation (Optional but strict if entered)
-    const contactInput = $('#contact').val();
+    // 2. Phone/Ext Validation (如果有的話)
+    const contactInput = $('#contact').val().trim();
     if (contactInput) {
-        // Allow: 09xxxxxxxx (Mobile), 0x-xxxxxxx (Landline), or with extension #xxxx
-        // Broad regex: Starts with 0, contains digits, dashes, or #, min length 7
-        const phoneRegex = /^0[\d\-#]{6,20}$/;
+        // 允許: 09開頭手機, 0開頭市話, #開頭分機, 或 3-8碼純數字分機
+        const phoneRegex = /(^0[\d\-#]{6,20}$)|(^#?\d{3,8}$)/;
         if (!phoneRegex.test(contactInput)) {
-            $('#alertModalBody').html('請輸入有效的聯絡電話。<br>格式範例：0912345678 或 036573511<br><small>Please enter a valid phone number (e.g., 0912345678 or 036573511).</small>');
-            const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
-            alertModal.show();
+            $('#alertModalBody').html('<b>電話格式有誤</b><br>請輸入有效的手機、市話或分機號碼。<br><small class="text-muted">Invalid phone number format.</small>');
+            new bootstrap.Modal(document.getElementById('alertModal')).show();
             return;
         }
     }
 
-    submitButton.prop('disabled', true);
-    submitButton.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>上傳中... (Uploading...)');
+    // 3. Email Validation (如果有的話)
+    const emailInput = $('#email').val().trim();
+    if (emailInput) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput)) {
+            $('#alertModalBody').html('<b>Email 格式有誤</b><br>請輸入有效的電子信箱地址。<br><small class="text-muted">Invalid email address.</small>');
+            new bootstrap.Modal(document.getElementById('alertModal')).show();
+            return;
+        }
+    }
 
-    // Use FormData for standard submission
+    // Lock Button
+    submitButton.prop('disabled', true);
+    submitButton.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>傳送中... (Submitting...)');
+
+    // 4. Prepare Data (FormData)
     const formData = new FormData();
-    formData.append('key', urlParams.get('key') || '');
+    // 使用上方定義的 API_KEY，確保跟 GAS 驗證通過
+    formData.append('key', API_KEY);
+
     formData.append('building', $('#building').val());
     formData.append('floor', $('#floor').val());
     formData.append('name', $('#name').val());
-    formData.append('contact', $('#contact').val());
-    formData.append('email', $('#email').val());
+    formData.append('contact', contactInput);
+    formData.append('email', emailInput);
     formData.append('feedback', $('#feedback').val());
     formData.append('image', $('#imageBase64').val());
-    formData.append('mimeType', imageInput.files[0] ? imageInput.files[0].type : '');
 
-    // Use fetch API instead of iframe
+    // 這裡改為讀取 hidden input 的 mimeType (因為可能被轉檔成 jpeg 了)
+    // 如果沒有圖片，給空值
+    formData.append('mimeType', $('#imageMimeType').val() || '');
+
+    // 5. Send via fetch
     fetch(SCRIPT_URL, {
         method: 'POST',
         body: formData
@@ -127,15 +201,13 @@ $('#submitBtn').on('click', function () {
             submitButton.prop('disabled', false);
             submitButton.html('送出意見 <small class="d-block fw-normal opacity-75" style="font-size: 0.8rem;">Submit Feedback</small>');
 
-            $('#alertModalBody').html('提交失敗 (Submission Failed):<br>' + error.message);
+            $('#alertModalBody').html('提交失敗 (Submission Failed):<br>' + (error.message || error));
             const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
             alertModal.show();
         });
 
     function showSuccess() {
-        // Hide main container
         $('#mainContainer').fadeOut(300, function () {
-            // Show success container
             $('#successContainer').fadeIn(500);
         });
     }
