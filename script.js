@@ -1,6 +1,7 @@
+// 1. Parse URL Parameters (Global Scope)
+const urlParams = new URLSearchParams(window.location.search);
+
 document.addEventListener('DOMContentLoaded', function () {
-    // 1. Parse URL Parameters
-    const urlParams = new URLSearchParams(window.location.search);
     const buildingParam = urlParams.get('building') || '未指定';
 
     // 2. Set Building Field
