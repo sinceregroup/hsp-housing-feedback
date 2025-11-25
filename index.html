@@ -399,156 +399,119 @@
     <div class="container safe-area-padding" id="successContainer" style="display: none;">
         <div class="glass-card success-container d-block">
             <div class="checkmark-circle">
-                <div class="background"></div>
-                <div class="checkmark"></div>
-            </div>
-            <h3 class="fw-bold mt-3">提交成功</h3>
-            <h5 class="text-muted fw-normal mb-4">Success</h5>
-            <p class="mb-4 text-secondary">感謝您的回饋，您的意見是我們進步的動力！<br>Thank you for your feedback!</p>
-            <button class="btn btn-outline-secondary rounded-pill px-4" onclick="window.close()">關閉視窗 (Close)</button>
-        </div>
-    </div>
+                '致知樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '聚賢樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '明德樓': ['1F', '2F', '3F', '4F'],
+                '至善樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '蘭苑': ['1F', '2F', '3F', '4F', '5F'],
+                '誠意樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '日新樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '莊敬樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '自強樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '正心樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '學誠樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '學樸樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '篤行樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '華夏樓': ['1F', '2F', '3F', '4F'],
+                '漢光樓': ['1F', '2F', '3F', '4F'],
+                '竹水樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '華光樓': ['1F', '2F', '3F', '4F'],
+                '弘道樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
+                '弘毅樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
+                '弘遠樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
+                '弘學樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
+                '學禮樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F', '9F', '10F', '11F', '12F'],
+                '弘德樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
+                '中興樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '竹山樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
+                '弘仁樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F']
+                };
 
-    <!-- Alert Modal -->
-    <div class="modal fade" id="alertModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass-card border-0" style="background: rgba(255,255,255,0.9);">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">提示 (Notice)</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body pt-2 pb-4" id="alertModalBody"></div>
-                <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn btn-primary w-100 rounded-4 py-2" data-bs-dismiss="modal">確定
-                        (OK)</button>
-                </div>
-            </div>
-        </div>
-    </div>
+                document.addEventListener('DOMContentLoaded', function () {
+                // 1. Parse URL Parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const buildingParam = urlParams.get('building') || '未指定';
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // CONFIGURATION
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytVBFkT6gkKLMAkyA6NNxCOs641gRV9vQjbEoaccn9Ipn-SNYkqbDRuR_UDmB1UXEgzg/exec'; // PLACEHOLDER
+                // 2. Set Building Field
+                const buildingInput = document.getElementById('building');
+                buildingInput.value = buildingParam;
 
-        // Dynamic Floor Configuration
-        const buildingFloors = {
-            '親民樓': ['1F', '2F', '3F', '4F', '5F'],
-            '梅苑': ['1F', '2F', '3F', '4F', '5F'],
-            '格物樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '致知樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '聚賢樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '明德樓': ['1F', '2F', '3F', '4F'],
-            '至善樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '蘭苑': ['1F', '2F', '3F', '4F', '5F'],
-            '誠意樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '日新樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '莊敬樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '自強樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '正心樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '學誠樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '學樸樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '篤行樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '華夏樓': ['1F', '2F', '3F', '4F'],
-            '漢光樓': ['1F', '2F', '3F', '4F'],
-            '竹水樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '華光樓': ['1F', '2F', '3F', '4F'],
-            '弘道樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
-            '弘毅樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
-            '弘遠樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
-            '弘學樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
-            '學禮樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F', '9F', '10F', '11F', '12F'],
-            '弘德樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F'],
-            '中興樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '竹山樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F'],
-            '弘仁樓': ['1F', '2F', '3F', '4F', '5F', '6F', '7F', '8F']
-        };
+                // 3. Populate Floor Dropdown
+                const floorSelect = document.getElementById('floor');
+                const floors = buildingFloors[buildingParam] || []; // Default to empty if building not found
 
-        document.addEventListener('DOMContentLoaded', function () {
-            // 1. Parse URL Parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const buildingParam = urlParams.get('building') || '未指定';
-
-            // 2. Set Building Field
-            const buildingInput = document.getElementById('building');
-            buildingInput.value = buildingParam;
-
-            // 3. Populate Floor Dropdown
-            const floorSelect = document.getElementById('floor');
-            const floors = buildingFloors[buildingParam] || []; // Default to empty if building not found
-
-            if (floors.length > 0) {
+                if (floors.length > 0) {
                 floors.forEach(floor => {
-                    const option = document.createElement('option');
-                    option.value = floor;
-                    option.textContent = floor;
-                    floorSelect.appendChild(option);
+                const option = document.createElement('option');
+                option.value = floor;
+                option.textContent = floor;
+                floorSelect.appendChild(option);
                 });
-            } else {
+                } else {
                 // Fallback if building is unknown or has no config
                 const option = document.createElement('option');
                 option.value = "其他";
                 option.textContent = "其他 (Other)";
                 floorSelect.appendChild(option);
-            }
-        });
+                }
+                });
 
-        // Image Preview and Base64 Conversion
-        const imageInput = document.getElementById('imageInput');
-        const imagePreview = document.getElementById('imagePreview');
-        const imageBase64 = document.getElementById('imageBase64');
+                // Image Preview and Base64 Conversion
+                const imageInput = document.getElementById('imageInput');
+                const imagePreview = document.getElementById('imagePreview');
+                const imageBase64 = document.getElementById('imageBase64');
 
-        imageInput.addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (file) {
+                imageInput.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    // Show preview
-                    imagePreview.src = e.target.result;
-                    imagePreview.style.display = 'block';
+                // Show preview
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
 
-                    // Set Base64 string to hidden input (remove data:image/xxx;base64, prefix)
-                    const base64String = e.target.result.split(',')[1];
-                    imageBase64.value = base64String;
+                // Set Base64 string to hidden input (remove data:image/xxx;base64, prefix)
+                const base64String = e.target.result.split(',')[1];
+                imageBase64.value = base64String;
                 };
                 reader.readAsDataURL(file);
-            } else {
+                } else {
                 imagePreview.style.display = 'none';
                 imagePreview.src = '';
                 imageBase64.value = '';
-            }
-        });
+                }
+                });
 
-        // Form Submission
-        $('#submitBtn').on('click', function () {
-            const submitButton = $(this);
-            const form = document.getElementById('feedbackForm');
+                // Form Submission
+                $('#submitBtn').on('click', function () {
+                const submitButton = $(this);
+                const form = document.getElementById('feedbackForm');
 
-            // Validation
-            if (!form.checkValidity()) {
+                // Validation
+                if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
-            }
+                }
 
-            // Phone Validation (Optional but strict if entered)
-            const contactInput = $('#contact').val();
-            if (contactInput) {
+                // Phone Validation (Optional but strict if entered)
+                const contactInput = $('#contact').val();
+                if (contactInput) {
                 // Allow: 09xxxxxxxx (Mobile), 0x-xxxxxxx (Landline), or with extension #xxxx
                 // Simple regex: Starts with 0, contains digits, dashes, or #, min length 7
                 const phoneRegex = /^0[\d\-#]{6,20}$/;
                 if (!phoneRegex.test(contactInput)) {
-                    $('#alertModalBody').html('請輸入有效的聯絡電話或分機。<br>Please enter a valid phone number or extension.');
-                    const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
-                    alertModal.show();
-                    return;
+                $('#alertModalBody').html('請輸入有效的聯絡電話或分機。<br>Please enter a valid phone number or extension.');
+                const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                alertModal.show();
+                return;
                 }
-            }
+                }
 
-            submitButton.prop('disabled', true);
-            submitButton.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>傳送中... (Submitting...)');
+                submitButton.prop('disabled', true);
+                submitButton.html('<span class="spinner-border spinner-border-sm me-2" role="status"
+                    aria-hidden="true"></span>傳送中... (Submitting...)');
 
-            const dataToSend = {
+                const dataToSend = {
                 building: $('#building').val(),
                 floor: $('#floor').val(),
                 name: $('#name').val(),
@@ -556,46 +519,46 @@
                 feedback: $('#feedback').val(),
                 image: $('#imageBase64').val(),
                 mimeType: imageInput.files[0] ? imageInput.files[0].type : ''
-            };
+                };
 
-            const iframe = document.createElement('iframe');
-            iframe.name = 'submitFrame';
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
+                const iframe = document.createElement('iframe');
+                iframe.name = 'submitFrame';
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
 
-            const formElement = document.createElement('form');
-            formElement.method = 'POST';
-            formElement.action = SCRIPT_URL;
-            formElement.target = 'submitFrame';
+                const formElement = document.createElement('form');
+                formElement.method = 'POST';
+                formElement.action = SCRIPT_URL;
+                formElement.target = 'submitFrame';
 
-            for (const key in dataToSend) {
+                for (const key in dataToSend) {
                 const input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = key;
                 input.value = dataToSend[key];
                 formElement.appendChild(input);
-            }
-            document.body.appendChild(formElement);
-            formElement.submit();
+                }
+                document.body.appendChild(formElement);
+                formElement.submit();
 
-            iframe.onload = function () {
+                iframe.onload = function () {
                 showSuccess();
-            };
+                };
 
-            // Fallback timeout
-            setTimeout(() => {
+                // Fallback timeout
+                setTimeout(() => {
                 showSuccess();
-            }, 2500);
+                }, 2500);
 
-            function showSuccess() {
+                function showSuccess() {
                 // Hide main container
                 $('#mainContainer').fadeOut(300, function () {
-                    // Show success container
-                    $('#successContainer').fadeIn(500);
+                // Show success container
+                $('#successContainer').fadeIn(500);
                 });
-            }
-        });
-    </script>
+                }
+                });
+                </script>
 </body>
 
 </html>
