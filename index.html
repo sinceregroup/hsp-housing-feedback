@@ -130,9 +130,9 @@
             <div class="text-center mt-3">
                 <p class="text-muted opacity-75 mb-0" style="font-size: 0.85rem;">
                     提交即代表您同意 <a href="#" class="text-primary text-decoration-underline" data-bs-toggle="modal"
-                        data-bs-target="#privacyModal">隱私權政策</a><br>
+                        data-bs-target="#privacyModalZH">隱私權政策</a><br>
                     By submitting, you agree to the <a href="#" class="text-primary text-decoration-underline" data-bs-toggle="modal"
-                    data-bs-target="#privacyModal">Privacy Policy</a>.
+                    data-bs-target="#privacyModalEN">Privacy Policy</a>.
                 </p>
             </div>
         </div>
@@ -173,16 +173,15 @@
         </div>
     </div>
 
-    <!-- Privacy Policy Modal -->
-    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <!-- Privacy Policy Modal (Chinese) -->
+    <div class="modal fade" id="privacyModalZH" tabindex="-1" aria-labelledby="privacyModalLabelZH" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
-            <div class="modal-content glass-card border-0" style="background: rgba(255,255,255,0.9);">
+            <div class="modal-content glass-card border-0" style="background: rgba(255,255,255,0.95);">
                 <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold" id="privacyModalLabel">隱私權政策 (Privacy Policy)</h5>
+                    <h5 class="modal-title fw-bold" id="privacyModalLabelZH">隱私權政策</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-2 pb-4">
-                    <!-- 內容保持原本的，這裡省略以節省版面 -->
                     <p>本平台為「114年竹科住宅區眷舍公共空間維護案」之意見回饋服務，將會蒐集您的部分個人資料。請您詳閱以下隱私權政策：</p>
                     <p><strong>1. 資料蒐集之目的：</strong> 蒐集您的姓名、聯絡方式、樓別、樓層、意見內容及上傳照片，旨在處理您的公共區域清潔維護建議、進行後續聯繫及改善服務品質。</p>
                     <p><strong>2. 資料蒐集之類別：</strong></p>
@@ -211,15 +210,26 @@
                     <p>若您欲行使上述權利，請透過本案相關業務窗口聯繫。</p>
                     <p><strong>5. 不提供個人資料之影響：</strong> 若您不提供必要的個人資料（如樓別、樓層、意見內容），本平台將無法受理您的意見回饋。</p>
                     <p><strong>6. 資料安全：</strong> 本平台將採取適當的安全措施，保護您的個人資料，防止未經授權的存取、使用或洩露。</p>
-                    <p>提交意見即表示您已閱讀、理解並同意本隱私權政策之所有內容。</p>
-                    <hr>
-                    <p>This platform collects some of your personal data to provide feedback services for the "2025 HSP
-                        Housing Public Area Maintenance Project". Please read the following Privacy Policy carefully:
-                    </p>
-                    <p><strong>1. Purpose of Data Collection:</strong> Your name, contact information, building, floor,
-                        feedback content, and uploaded photos are collected to process your feedback on public area
-                        cleaning, facilitate
-                        follow-up communication, and improve service quality.</p>
+                    <p class="mt-4 fw-bold">提交意見即表示您已閱讀、理解並同意本隱私權政策之所有內容。</p>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-primary w-100 rounded-4 py-2" data-bs-dismiss="modal">我同意</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Privacy Policy Modal (English) -->
+    <div class="modal fade" id="privacyModalEN" tabindex="-1" aria-labelledby="privacyModalLabelEN" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content glass-card border-0" style="background: rgba(255,255,255,0.95);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="privacyModalLabelEN">Privacy Policy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-2 pb-4">
+                    <p>This platform collects some of your personal data to provide feedback services for the "2025 HSP Housing Public Area Maintenance Project". Please read the following Privacy Policy carefully:</p>
+                    <p><strong>1. Purpose of Data Collection:</strong> Your name, contact information, building, floor, feedback content, and uploaded photos are collected to process your feedback on public area cleaning, facilitate follow-up communication, and improve service quality.</p>
                     <p><strong>2. Categories of Data Collected:</strong></p>
                     <ul>
                         <li>Personal Identification: Name (optional)</li>
@@ -230,17 +240,12 @@
                     </ul>
                     <p><strong>3. Period, Area, Recipients, and Methods of Data Utilization:</strong></p>
                     <ul>
-                        <li><strong>Period:</strong> From the time you submit your feedback until the termination of
-                            this service or the completion of your feedback processing.</li>
-                        <li><strong>Area:</strong> Your data will be stored on cloud servers (e.g., Google platforms)
-                            and will only be used within Taiwan.</li>
-                        <li><strong>Recipients:</strong> Your feedback and related data will be provided to the Hsinchu
-                            Science Park Bureau and the project contractor for processing and improvement.</li>
-                        <li><strong>Methods:</strong> Your data will be stored in electronic file format and used only
-                            within the scope of the aforementioned purposes.</li>
+                        <li><strong>Period:</strong> From the time you submit your feedback until the termination of this service or the completion of your feedback processing.</li>
+                        <li><strong>Area:</strong> Your data will be stored on cloud servers (e.g., Google platforms) and will only be used within Taiwan.</li>
+                        <li><strong>Recipients:</strong> Your feedback and related data will be provided to the Hsinchu Science Park Bureau and the project contractor for processing and improvement.</li>
+                        <li><strong>Methods:</strong> Your data will be stored in electronic file format and used only within the scope of the aforementioned purposes.</li>
                     </ul>
-                    <p><strong>4. Rights You May Exercise:</strong> Regarding your personal data, you may exercise the
-                        following rights:</p>
+                    <p><strong>4. Rights You May Exercise:</strong> Regarding your personal data, you may exercise the following rights:</p>
                     <ul>
                         <li>Inquire or request to review.</li>
                         <li>Request a copy.</li>
@@ -248,19 +253,13 @@
                         <li>Request to stop collection, processing, or utilization.</li>
                         <li>Request deletion.</li>
                     </ul>
-                    <p>If you wish to exercise the above rights, please contact the project management unit through
-                        relevant channels.</p>
-                    <p><strong>5. Impact of Not Providing Personal Data:</strong> If you do not provide necessary
-                        personal data (such as building, floor, feedback content), this platform will not be able to
-                        process your feedback.</p>
-                    <p><strong>6. Data Security:</strong> This platform will take appropriate security measures to
-                        protect your personal data from unauthorized access, use, or disclosure.</p>
-                    <p>By submitting feedback, you acknowledge, understand, and agree to all contents of this Privacy
-                        Policy.</p>
+                    <p>If you wish to exercise the above rights, please contact the project management unit through relevant channels.</p>
+                    <p><strong>5. Impact of Not Providing Personal Data:</strong> If you do not provide necessary personal data (such as building, floor, feedback content), this platform will not be able to process your feedback.</p>
+                    <p><strong>6. Data Security:</strong> This platform will take appropriate security measures to protect your personal data from unauthorized access, use, or disclosure.</p>
+                    <p class="mt-4 fw-bold">By submitting feedback, you acknowledge, understand, and agree to all contents of this Privacy Policy.</p>
                 </div>
                 <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn btn-primary w-100 rounded-4 py-2" data-bs-dismiss="modal">我同意 (I
-                        Agree)</button>
+                    <button type="button" class="btn btn-primary w-100 rounded-4 py-2" data-bs-dismiss="modal">I Agree</button>
                 </div>
             </div>
         </div>
@@ -274,4 +273,5 @@
 </body>
 
 </html>
+
 
